@@ -30,6 +30,7 @@ fn main() -> anyhow::Result<()> {
             nibbles!(8, _, _, 4) => chip8.addx(b, c),
             nibbles!(8, _, _, 5) => chip8.subx(b, c),
             nibbles!(8, _, _, 6) => chip8.shir(b),
+            nibbles!(8, _, _, 7) => chip8.suby(b, c),
             nibbles!(8, _, _, E) => chip8.shil(b),
             nibbles!(A, _, _, _) => chip8.seti(joinibble!(b, c, d)),
             nibbles!(B, _, _, _) => chip8.jmpi(joinibble!(b, c, d)),

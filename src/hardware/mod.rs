@@ -171,6 +171,14 @@ impl Chip8 {
         self[x] = v >> 1
     }
 
+    pub fn suby(&mut self, x: u8, y: u8) {
+        let vx = self[x];
+        let vy = self[y];
+        let v = vy.wrapping_sub(vx);
+        self[0xFu8] = if v > vy { 1 } else { 0 };
+        self[x] = v
+    }
+
     pub fn shil(&mut self, x: u8) {
         let v = self[x];
         self[0xFu8] = v >> (u8::BITS - 1);
