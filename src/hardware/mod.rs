@@ -121,4 +121,9 @@ impl Chip8 {
     pub fn i(&mut self, addr: u16) {
         self.i = addr
     }
+
+    pub fn jmpi(&mut self, nnn: u16) {
+        let v0 = self[0u8] as u16;
+        self.pc = v0 + nnn
+    }
 }
