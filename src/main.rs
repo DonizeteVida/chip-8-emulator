@@ -1,3 +1,5 @@
+mod window;
+
 use anyhow::{Context, Result};
 
 #[cfg(debug_assertions)]
@@ -21,6 +23,8 @@ fn main() -> Result<()> {
 
     #[cfg(debug_assertions)]
     dump(&bytes);
+
+    let mut window = window::Window::new();
 
     Ok(())
 }
