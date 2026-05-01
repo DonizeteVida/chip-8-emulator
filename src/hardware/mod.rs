@@ -165,6 +165,18 @@ impl Chip8 {
         self[x] = v
     }
 
+    pub fn shir(&mut self, x: u8) {
+        let v = self[x];
+        self[0xFu8] = v & 0b00000001;
+        self[x] = v >> 1
+    }
+
+    pub fn shil(&mut self, x: u8) {
+        let v = self[x];
+        self[0xFu8] = v >> (u8::BITS - 1);
+        self[x] = v << 1
+    }
+
     pub fn seti(&mut self, nnn: u16) {
         self.i = nnn
     }
