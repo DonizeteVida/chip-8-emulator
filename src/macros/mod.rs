@@ -22,3 +22,56 @@ macro_rules! nibbles {
     (@map 9) => (0x9u8);
     (@map _) => (_)
 }
+
+#[macro_export]
+macro_rules! count {
+    () => (0);
+    ($a:expr $(, $b:expr)*) => {
+        1 + count!($($b),*)
+    };
+}
+
+#[macro_export]
+macro_rules! joinibble {
+    () => {0};
+
+    ($head:expr $(, $tail:expr)*) => {
+        (($head as u16) << (4 * count!($($tail),*))) | joinibble!($($tail),*)
+    };
+}
+
+#[cfg(test)]
+mod count_tests {
+    #[test]
+    fn can_count() {
+        let result = count!(1, 2, 3, 4);
+        assert_eq!(result, 4);
+    }
+}
+
+#[cfg(test)]
+mod joinibble_tests {
+    #[test]
+    fn can_join_one() {
+        let result = joinibble!(0xA);
+        assert_eq!(result, 0xA);
+    }
+
+    #[test]
+    fn can_join_two() {
+        let result = joinibble!(0xF, 0xD);
+        assert_eq!(result, 0xFD);
+    }
+
+    #[test]
+    fn can_join_three() {
+        let result = joinibble!(0xA, 0xB, 0xC);
+        assert_eq!(result, 0xABC);
+    }
+
+    #[test]
+    fn can_join_four() {
+        let result = joinibble!(0xA, 0xB, 0xC, 0xD);
+        assert_eq!(result, 0xABCD);
+    }
+}

@@ -23,6 +23,7 @@ const FONT: [u8; 80] = [
 
 pub struct Chip8 {
     memory: [u8; 4096],
+    stack: [u16; 16],
     registers: [u8; 16],
     sp: u8,
     pc: u16,
@@ -63,6 +64,7 @@ impl Chip8 {
         Self {
             memory,
             registers: [0; 16],
+            stack: [0; 16],
             sp: 0,
             pc: START_CHIP_8_PROGRAM as u16,
             i: 0,
@@ -79,5 +81,21 @@ impl Chip8 {
         let b = byte & 0x0F;
 
         (a, b)
+    }
+
+    pub fn ret(&mut self) {
+        let sp = self.sp - 1;
+        self.pc = self.stack[sp as usize];
+        self.sp = sp
+    }
+
+    pub fn jmp(&mut self, addr: u16) {
+        self.pc = addr
+    }
+
+    pub fn call(&mut self, addr: u16) {
+        self.stack[self.sp as usize] = self.pc;
+        self.sp += 1;
+        self.pc = addr
     }
 }
