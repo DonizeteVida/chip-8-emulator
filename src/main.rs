@@ -24,6 +24,7 @@ fn main() -> anyhow::Result<()> {
             nibbles!(6, _, _, _) => chip8.setx(b, joinibble!(c d)),
             nibbles!(7, _, _, _) => chip8.addx(b, joinibble!(c d)),
             nibbles!(8, _, _, 0) => chip8.stxy(b, c),
+            nibbles!(8, _, _, 1) => chip8.or(b, c),
             nibbles!(A, _, _, _) => chip8.seti(joinibble!(b, c, d)),
             nibbles!(B, _, _, _) => chip8.jmpi(joinibble!(b, c, d)),
             nibbles!(_, _, _, _) => std::panic!("Not Implemented: {:x}{:x}{:x}{:x}", a, b, c, d),

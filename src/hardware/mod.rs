@@ -131,6 +131,12 @@ impl Chip8 {
         self[x] = self[y]
     }
 
+    pub fn or(&mut self, x: u8, y: u8) {
+        let vx = self[x];
+        let vy = self[y];
+        self[x] = vx | vy
+    }
+
     pub fn seti(&mut self, nnn: u16) {
         self.i = nnn
     }
