@@ -122,7 +122,7 @@ impl Chip8 {
         self[x] = nn
     }
 
-    pub fn addx(&mut self, x: u8, nn: u8) {
+    pub fn addn(&mut self, x: u8, nn: u8) {
         let v = self[x];
         self[x] = v + nn
     }
