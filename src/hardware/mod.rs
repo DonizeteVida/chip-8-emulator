@@ -149,6 +149,22 @@ impl Chip8 {
         self[x] = vx ^ vy
     }
 
+    pub fn addx(&mut self, x: u8, y: u8) {
+        let vx = self[x];
+        let vy = self[y];
+        let v = vx.wrapping_add(vy);
+        self[0xFu8] = if v < vx { 1 } else { 0 };
+        self[x] = v
+    }
+
+    pub fn subx(&mut self, x: u8, y: u8) {
+        let vx = self[x];
+        let vy = self[y];
+        let v = vx.wrapping_sub(vy);
+        self[0xFu8] = if v > vx { 1 } else { 0 };
+        self[x] = v
+    }
+
     pub fn seti(&mut self, nnn: u16) {
         self.i = nnn
     }
