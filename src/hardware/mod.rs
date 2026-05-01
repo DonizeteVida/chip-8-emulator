@@ -1,0 +1,69 @@
+use std::ops::{Index, IndexMut};
+
+const FONT: [u8; 80] = [
+    0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
+    0x20, 0x60, 0x20, 0x20, 0x70, // 1
+    0xF0, 0x10, 0xF0, 0x80, 0xF0, // 2
+    0xF0, 0x10, 0xF0, 0x10, 0xF0, // 3
+    0x90, 0x90, 0xF0, 0x10, 0x10, // 4
+    0xF0, 0x80, 0xF0, 0x10, 0xF0, // 5
+    0xF0, 0x80, 0xF0, 0x90, 0xF0, // 6
+    0xF0, 0x10, 0x20, 0x40, 0x40, // 7
+    0xF0, 0x90, 0xF0, 0x90, 0xF0, // 8
+    0xF0, 0x90, 0xF0, 0x10, 0xF0, // 9
+    0xF0, 0x90, 0xF0, 0x90, 0x90, // A
+    0xE0, 0x90, 0xE0, 0x90, 0xE0, // B
+    0xF0, 0x80, 0x80, 0x80, 0xF0, // C
+    0xE0, 0x90, 0x90, 0x90, 0xE0, // D
+    0xF0, 0x80, 0xF0, 0x80, 0xF0, // E
+    0xF0, 0x80, 0xF0, 0x80, 0x80, // F
+];
+
+pub struct Chip8 {
+    memory: [u8; 4096],
+    registers: [u8; 16],
+    sp: u8,
+    pc: u16,
+    i: u16,
+    dt: u8,
+    st: u8,
+}
+
+impl Index<u16> for Chip8 {
+    type Output = u8;
+
+    fn index(&self, index: u16) -> &Self::Output {
+        &self.memory[index as usize]
+    }
+}
+
+impl Index<u8> for Chip8 {
+    type Output = u8;
+
+    fn index(&self, index: u8) -> &Self::Output {
+        &self.registers[index as usize]
+    }
+}
+
+impl IndexMut<u8> for Chip8 {
+    fn index_mut(&mut self, index: u8) -> &mut Self::Output {
+        &mut self.registers[index as usize]
+    }
+}
+
+impl Chip8 {
+    pub fn new() -> Self {
+        let mut memory = [0; 4096];
+        memory[..80].copy_from_slice(&FONT);
+
+        Self {
+            memory,
+            registers: [0; 16],
+            sp: 0,
+            pc: 0,
+            i: 0,
+            dt: 0,
+            st: 0,
+        }
+    }
+}
