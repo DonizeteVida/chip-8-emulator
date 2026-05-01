@@ -106,7 +106,7 @@ impl Chip8 {
         }
     }
 
-    pub fn neq(&mut self, x: u8, nn: u8) {
+    pub fn nenn(&mut self, x: u8, nn: u8) {
         let x = self[x];
         if x != nn {
             self.pc += 1;

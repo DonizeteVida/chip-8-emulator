@@ -19,7 +19,7 @@ fn main() -> anyhow::Result<()> {
             nibbles!(1, _, _, _) => chip8.jmp(joinibble!(b, c, d)),
             nibbles!(2, _, _, _) => chip8.call(joinibble!(b, c, d)),
             nibbles!(3, _, _, _) => chip8.eq(b, joinibble!(c d)),
-            nibbles!(4, _, _, _) => chip8.neq(b, joinibble!(c d)),
+            nibbles!(4, _, _, _) => chip8.nenn(b, joinibble!(c d)),
             nibbles!(5, _, _, 0) => chip8.skip(b, c),
             nibbles!(6, _, _, _) => chip8.setx(b, joinibble!(c d)),
             nibbles!(7, _, _, _) => chip8.addn(b, joinibble!(c d)),
