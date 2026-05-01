@@ -14,7 +14,7 @@ fn main() -> anyhow::Result<()> {
         let (c, d) = chip8.fetch();
 
         match (a, b, c, d) {
-            nibbles!(0, 0, E, 0) => println!("Clear screen"),
+            nibbles!(0, 0, E, 0) => window.clear()?,
             nibbles!(0, 0, E, E) => chip8.ret(),
             nibbles!(1, _, _, _) => chip8.jmp(joinibble!(b, c, d)),
             nibbles!(2, _, _, _) => chip8.call(joinibble!(b, c, d)),

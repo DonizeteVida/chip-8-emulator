@@ -11,4 +11,11 @@ impl Window {
     pub fn draw(&mut self, buffer: &[u8]) {
         
     }
+
+    #[cfg(unix)]
+    pub fn clear(&mut self) -> anyhow::Result<()> {
+        use std::io::Write;
+        print!("\x1B[2J\x1B[1;1H");
+        Ok(std::io::stdout().flush()?)
+    }
 }
