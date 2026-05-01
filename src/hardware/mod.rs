@@ -185,6 +185,14 @@ impl Chip8 {
         self[x] = v << 1
     }
 
+    pub fn nexy(&mut self, x: u8, y: u8) {
+        let vx = self[x];
+        let vy = self[y];
+        if vx != vy {
+            self.pc += 2
+        }
+    }
+
     pub fn seti(&mut self, nnn: u16) {
         self.i = nnn
     }
