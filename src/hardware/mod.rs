@@ -201,4 +201,8 @@ impl Chip8 {
         let v0 = self[0u8] as u16;
         self.pc = v0 + nnn
     }
+
+    pub fn rand(&mut self, x: u8, nn: u8) {
+        self[x] = rand::random::<u8>() & nn
+    }
 }
