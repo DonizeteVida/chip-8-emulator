@@ -16,7 +16,7 @@ fn dump(bytes: &[u8]) {
 }
 
 fn main() -> Result<()> {
-    let rom = std::env::args().nth(1).context("ch8 rom not found")?;
+    let rom = std::env::args().nth(1).context("ch8 rom name param needed")?;
     let bytes = std::fs::read(rom)?;
 
     #[cfg(debug_assertions)]
