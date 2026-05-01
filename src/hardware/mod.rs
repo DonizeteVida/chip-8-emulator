@@ -127,6 +127,10 @@ impl Chip8 {
         self[x] = v + nn
     }
 
+    pub fn stxy(&mut self, x: u8, y: u8) {
+        self[x] = self[y]
+    }
+
     pub fn seti(&mut self, nnn: u16) {
         self.i = nnn
     }
