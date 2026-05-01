@@ -89,14 +89,14 @@ impl Chip8 {
         self.sp = sp
     }
 
-    pub fn jmp(&mut self, addr: u16) {
-        self.pc = addr
+    pub fn jmp(&mut self, nnn: u16) {
+        self.pc = nnn
     }
 
-    pub fn call(&mut self, addr: u16) {
+    pub fn call(&mut self, nnn: u16) {
         self.stack[self.sp as usize] = self.pc;
         self.sp += 1;
-        self.pc = addr
+        self.pc = nnn
     }
 
     pub fn eq(&mut self, x: u8, nn: u8) {
