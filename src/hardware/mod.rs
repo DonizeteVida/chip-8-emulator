@@ -64,10 +64,20 @@ impl Chip8 {
             memory,
             registers: [0; 16],
             sp: 0,
-            pc: 0,
+            pc: START_CHIP_8_PROGRAM as u16,
             i: 0,
             dt: 0,
             st: 0,
         }
+    }
+
+    pub fn fetch(&mut self) -> (u8, u8) {
+        let byte = self[self.pc];
+        self.pc += 1;
+
+        let a = byte >> 4;
+        let b = byte & 0x0F;
+
+        (a, b)
     }
 }
