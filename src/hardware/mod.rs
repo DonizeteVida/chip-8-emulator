@@ -118,8 +118,17 @@ impl Chip8 {
         self.eq(x, y)
     }
 
-    pub fn i(&mut self, addr: u16) {
-        self.i = addr
+    pub fn setx(&mut self, x: u8, nn: u8) {
+        self[x] = nn
+    }
+
+    pub fn addx(&mut self, x: u8, nn: u8) {
+        let v = self[x];
+        self[x] = v + nn
+    }
+
+    pub fn seti(&mut self, nnn: u16) {
+        self.i = nnn
     }
 
     pub fn jmpi(&mut self, nnn: u16) {
