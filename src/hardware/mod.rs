@@ -98,4 +98,27 @@ impl Chip8 {
         self.sp += 1;
         self.pc = addr
     }
+
+    pub fn eq(&mut self, x: u8, nn: u8) {
+        let x = self[x];
+        if x == nn {
+            self.pc += 1;
+        }
+    }
+
+    pub fn neq(&mut self, x: u8, nn: u8) {
+        let x = self[x];
+        if x != nn {
+            self.pc += 1;
+        }
+    }
+
+    pub fn skip(&mut self, x: u8, y: u8) {
+        let y = self[y];
+        self.eq(x, y)
+    }
+
+    pub fn i(&mut self, addr: u16) {
+        self.i = addr
+    }
 }

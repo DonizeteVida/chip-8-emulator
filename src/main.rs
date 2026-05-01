@@ -18,6 +18,10 @@ fn main() -> anyhow::Result<()> {
             nibbles!(0, 0, E, E) => chip8.ret(),
             nibbles!(1, _, _, _) => chip8.jmp(joinibble!(b, c, d)),
             nibbles!(2, _, _, _) => chip8.call(joinibble!(b, c, d)),
+            nibbles!(3, _, _, _) => chip8.eq(b, joinibble!(c d)),
+            nibbles!(4, _, _, _) => chip8.neq(b, joinibble!(c d)),
+            nibbles!(5, _, _, 0) => chip8.skip(b, c),
+            nibbles!(A, _, _, _) => chip8.i(joinibble!(b, c, d)),
             nibbles!(_, _, _, _) => std::panic!("Not Implemented: {:x}{:x}{:x}{:x}", a, b, c, d),
         }
     }

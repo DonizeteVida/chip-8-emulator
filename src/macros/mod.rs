@@ -38,6 +38,8 @@ macro_rules! joinibble {
     ($head:expr $(, $tail:expr)*) => {
         (($head as u16) << (4 * count!($($tail),*))) | joinibble!($($tail),*)
     };
+
+    ($a:tt $b:tt) => ($a << 4 | $b)
 }
 
 #[cfg(test)]
@@ -73,5 +75,11 @@ mod joinibble_tests {
     fn can_join_four() {
         let result = joinibble!(0xA, 0xB, 0xC, 0xD);
         assert_eq!(result, 0xABCD);
+    }
+
+    #[test]
+    fn no_comma() {
+        let result = joinibble!(0xF 0xD);
+        assert_eq!(result, 0xFD);
     }
 }
