@@ -1,5 +1,7 @@
 use std::ops::{Index, IndexMut};
 
+const START_CHIP_8_PROGRAM: usize = 0x200;
+
 const FONT: [u8; 80] = [
     0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
     0x20, 0x60, 0x20, 0x20, 0x70, // 1
@@ -52,9 +54,11 @@ impl IndexMut<u8> for Chip8 {
 }
 
 impl Chip8 {
-    pub fn new() -> Self {
+    pub fn new(data: &[u8]) -> Self {
         let mut memory = [0; 4096];
-        memory[..80].copy_from_slice(&FONT);
+
+        memory[..FONT.len()].copy_from_slice(&FONT);
+        memory[START_CHIP_8_PROGRAM..START_CHIP_8_PROGRAM + data.len()].copy_from_slice(data);
 
         Self {
             memory,
