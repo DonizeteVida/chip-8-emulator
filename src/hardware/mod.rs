@@ -1,6 +1,7 @@
 use std::ops::{Index, IndexMut};
 
-const START_CHIP_8_PROGRAM: usize = 0x200;
+const START_PROGRAM: usize = 0x200;
+const START_DISPLAY: usize = 0xF00;
 
 const FONT: [u8; 80] = [
     0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
@@ -30,6 +31,8 @@ pub struct Chip8 {
     i: u16,
     dt: u8,
     st: u8,
+    width: u8,
+    height: u8,
 }
 
 impl Index<u16> for Chip8 {
@@ -59,17 +62,19 @@ impl Chip8 {
         let mut memory = [0; 4096];
 
         memory[..FONT.len()].copy_from_slice(&FONT);
-        memory[START_CHIP_8_PROGRAM..START_CHIP_8_PROGRAM + data.len()].copy_from_slice(data);
+        memory[START_PROGRAM..START_PROGRAM + data.len()].copy_from_slice(data);
 
         Self {
             memory,
             registers: [0; 16],
             stack: [0; 16],
             sp: 0,
-            pc: START_CHIP_8_PROGRAM as u16,
+            pc: START_PROGRAM as u16,
             i: 0,
             dt: 0,
             st: 0,
+            width: 64,
+            height: 32,
         }
     }
 
@@ -204,5 +209,39 @@ impl Chip8 {
 
     pub fn rand(&mut self, x: u8, nn: u8) {
         self[x] = rand::random::<u8>() & nn
+    }
+
+    pub fn draw(
+        &mut self,
+        x: u8,
+        y: u8,
+        n: u8,
+        mut callback: impl FnMut(&[u8], u8) -> anyhow::Result<()>,
+    ) -> anyhow::Result<()> {
+        let pixels_per_unit = u8::BITS as usize;
+        let real_width = self.width as usize / pixels_per_unit;
+
+        let xv = self[x] as usize % self.width as usize;
+        let yv = self[y] as usize % self.height as usize;
+
+        let pixel_offset = xv % pixels_per_unit;
+
+        for i in 0..n as usize {
+            let y_offset = (yv + i) * (real_width);
+            let x_offset = xv / pixels_per_unit;
+
+            let sprite_index = i + self.i as usize;
+            let sprite_byte = self.memory[sprite_index];
+
+            self.memory[START_DISPLAY + y_offset + x_offset] ^= sprite_byte >> pixel_offset;
+
+            // fix non-aligned pixels
+            if (x_offset + 1) < real_width {
+                self.memory[START_DISPLAY + y_offset + x_offset + 1] ^=
+                    sprite_byte << (pixels_per_unit - pixel_offset);
+            }
+        }
+
+        callback(&self.memory[START_DISPLAY..], self.width)
     }
 }
