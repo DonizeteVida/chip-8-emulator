@@ -15,7 +15,7 @@ impl Window {
             }
             let byte = buffer[i];
             for i in 0..u8::BITS as usize {
-                if (0b10000000 >> i) & byte == 1 {
+                if (0b10000000 >> i) & byte > 0 {
                     print!("{WHITE_SQUARE}")
                 } else {
                     print!(" ")
