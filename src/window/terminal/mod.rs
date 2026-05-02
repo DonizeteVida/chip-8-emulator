@@ -17,7 +17,7 @@ impl Window {
             }
 
             for pixel_offset in 0..pixels_per_unit {
-                if (0x80u8 >> pixel_offset) & byte > 1 {
+                if (0x80u8 >> pixel_offset) & byte > 0 {
                     print!("{WHITE_SQUARE}")
                 } else {
                     print!(" ")
