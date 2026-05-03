@@ -1,15 +1,20 @@
+use anyhow::Result;
+
 const WHITE_SQUARE: char = '\u{2588}';
 
-pub struct Window;
+pub struct Window {
+    width: u32,
+    height: u32,
+}
 
 impl Window {
-    pub fn new() -> Self {
-        Self {}
+    pub fn new(width: u32, height: u32) -> Result<Self> {
+        Ok(Self { width, height })
     }
 
-    pub fn draw(&mut self, buffer: &[u8], width: u8) -> anyhow::Result<()> {
+    pub fn draw(&self, buffer: &[u8]) -> Result<()> {
         let pixels_per_unit = u8::BITS as usize;
-        let real_width = width as usize / pixels_per_unit;
+        let real_width = self.width as usize / pixels_per_unit;
 
         for (index, byte) in buffer.iter().enumerate() {
             if index % real_width == 0 {
@@ -28,7 +33,11 @@ impl Window {
         Ok(())
     }
 
-    pub fn clear(&mut self) -> anyhow::Result<()> {
+    pub fn clear(&mut self) -> Result<()> {
         Ok(())
+    }
+
+    pub fn pool(&mut self) -> Result<bool> {
+        Ok(true)
     }
 }

@@ -11,6 +11,6 @@ sdl3 = { version = "0.18.2", features = ["build-from-source-static", "unsafe_tex
 
 [features]
 default = ["sdl3_window"]
-term = []
+terminal_window = []
 rata = ["ratatui"]
 sdl3_window = ["sdl3"]

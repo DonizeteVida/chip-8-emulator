@@ -1,5 +1,5 @@
 cfg_select! {
-    feature = "term" => {
+    feature = "terminal_window" => {
         pub mod terminal;
         pub use terminal::Window as Window;
     }
