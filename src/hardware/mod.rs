@@ -31,8 +31,8 @@ pub struct Chip8 {
     i: u16,
     dt: u8,
     st: u8,
-    width: u8,
-    height: u8,
+    pub width: u8,
+    pub height: u8,
 }
 
 impl Index<u16> for Chip8 {
@@ -58,11 +58,11 @@ impl IndexMut<u8> for Chip8 {
 }
 
 impl Chip8 {
-    pub fn new(data: &[u8]) -> Self {
+    pub fn new(data: Vec<u8>) -> Self {
         let mut memory = [0; 4096];
 
         memory[..FONT.len()].copy_from_slice(&FONT);
-        memory[START_PROGRAM..START_PROGRAM + data.len()].copy_from_slice(data);
+        memory[START_PROGRAM..START_PROGRAM + data.len()].copy_from_slice(&data);
 
         Self {
             memory,
@@ -216,7 +216,7 @@ impl Chip8 {
         x: u8,
         y: u8,
         n: u8,
-        mut callback: impl FnMut(&[u8], u8) -> anyhow::Result<()>,
+        mut callback: impl FnMut(&[u8]) -> anyhow::Result<()>,
     ) -> anyhow::Result<()> {
         let pixels_per_unit = u8::BITS as usize;
         let real_width = self.width as usize / pixels_per_unit;
@@ -242,6 +242,6 @@ impl Chip8 {
             }
         }
 
-        callback(&self.memory[START_DISPLAY..], self.width)
+        callback(&self.memory[START_DISPLAY..])
     }
 }

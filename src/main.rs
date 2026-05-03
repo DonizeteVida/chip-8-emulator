@@ -5,9 +5,8 @@ mod util;
 mod window;
 
 fn main() -> anyhow::Result<()> {
-    let data = io::load_rom()?;
-    let mut window = window::Window::new();
-    let mut chip8 = hardware::Chip8::new(&data);
+    let mut chip8 = hardware::Chip8::new(io::load_rom()?);
+    let mut window = window::Window::new(chip8.width as u32, chip8.height as u32)?;
 
     loop {
         let (a, b) = chip8.fetch();
@@ -36,8 +35,14 @@ fn main() -> anyhow::Result<()> {
             nibbles!(A, _, _, _) => chip8.seti(joinibble!(b, c, d)),
             nibbles!(B, _, _, _) => chip8.jmpi(joinibble!(b, c, d)),
             nibbles!(C, _, _, _) => chip8.rand(b, joinibble!(c d)),
-            nibbles!(D, _, _, _) => chip8.draw(b, c, d, |a, b| window.draw(a, b))?,
+            nibbles!(D, _, _, _) => chip8.draw(b, c, d, |buffer| window.draw(buffer))?,
             nibbles!(_, _, _, _) => std::panic!("Not Implemented: {:x}{:x}{:x}{:x}", a, b, c, d),
         }
+
+        if !window.pool()? {
+            break;
+        }
     }
+
+    Ok(())
 }

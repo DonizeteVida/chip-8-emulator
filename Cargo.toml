@@ -7,8 +7,10 @@ edition = "2024"
 anyhow = "1.0.102"
 rand = "0.10.1"
 ratatui = { version = "0.30.0", optional = true }
+sdl3 = { version = "0.18.2", features = ["build-from-source-static", "unsafe_textures"], optional = true }
 
 [features]
-default = ["term"]
+default = ["sdl3_window"]
 term = []
 rata = ["ratatui"]
+sdl3_window = ["sdl3"]

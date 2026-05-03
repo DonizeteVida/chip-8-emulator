@@ -7,4 +7,8 @@ cfg_select! {
         pub mod ratatui;
         pub use ratatui::Window as Window;
     }
+    feature = "sdl3_window" => {
+        pub mod sdl3;
+        pub use sdl3::Window as Window;
+    }
 }
