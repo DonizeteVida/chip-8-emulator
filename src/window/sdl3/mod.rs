@@ -1,5 +1,4 @@
 use anyhow::Result;
-use sdl3::{event::WindowEvent, sys::render::SDL_RendererLogicalPresentation};
 
 pub struct Window {
     context: sdl3::Sdl,
@@ -21,7 +20,11 @@ impl Window {
             .build()?;
 
         let mut canvas = window.into_canvas();
-        canvas.set_logical_size(width, height, SDL_RendererLogicalPresentation::LETTERBOX)?;
+        canvas.set_logical_size(
+            width,
+            height,
+            sdl3::sys::render::SDL_RendererLogicalPresentation::LETTERBOX,
+        )?;
         canvas.present();
 
         let mut texture = canvas.texture_creator().create_texture_streaming(
@@ -39,12 +42,8 @@ impl Window {
     }
 
     pub fn draw(&mut self, bytes: &[u8]) -> Result<()> {
-        use sdl3::rect::Rect;
-
         const RGB565_SIZE: usize = 2;
         const PIXELS_PER_BYTE: usize = u8::BITS as usize;
-
-        self.canvas.clear();
 
         self.texture
             .with_lock(None, |texture_buffer: &mut [u8], pitch: usize| {
@@ -65,12 +64,7 @@ impl Window {
                 }
             })?;
 
-        let render_size = Rect::new(0, 0, self.texture.width(), self.texture.height());
-
-        self.canvas.copy(&self.texture, None, render_size)?;
-        self.canvas.present();
-
-        Ok(())
+        self.render_texture()
     }
 
     pub fn clear(&mut self) -> Result<()> {
@@ -79,6 +73,7 @@ impl Window {
         self.canvas.set_draw_color(Color::RGB(0, 0x4F, 0));
         self.canvas.clear();
         self.canvas.present();
+
         Ok(())
     }
 
@@ -96,11 +91,12 @@ impl Window {
                     ..
                 } => return Ok(false),
                 Event::Window { win_event, .. }
-                    if let WindowEvent::Resized(width, height) = win_event =>
+                    if let sdl3::event::WindowEvent::Resized(width, height) = win_event =>
                 {
                     let window = self.canvas.window_mut();
                     window.set_size(width.try_into()?, height.try_into()?)?;
-                    self.canvas.present();
+
+                    self.render_texture()?;
                 }
                 _ => {
                     println!("Event {:?}", event)
@@ -109,5 +105,19 @@ impl Window {
         }
 
         Ok(true)
+    }
+
+    fn render_texture(&mut self) -> Result<()> {
+        use sdl3::pixels::Color;
+        use sdl3::rect::Rect;
+
+        self.canvas.set_draw_color(Color::RGB(0, 0x4F, 0));
+        self.canvas.clear();
+
+        let render_size = Rect::new(0, 0, self.texture.width(), self.texture.height());
+        self.canvas.copy(&self.texture, None, render_size)?;
+        self.canvas.present();
+
+        Ok(())
     }
 }
