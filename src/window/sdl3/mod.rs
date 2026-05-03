@@ -90,9 +90,10 @@ impl Window {
                     keycode: Some(Keycode::Escape),
                     ..
                 } => return Ok(false),
-                Event::Window { win_event, .. }
-                    if let sdl3::event::WindowEvent::Resized(width, height) = win_event =>
-                {
+                Event::Window {
+                    win_event: sdl3::event::WindowEvent::Resized(width, height),
+                    ..
+                } => {
                     let window = self.canvas.window_mut();
                     window.set_size(width.try_into()?, height.try_into()?)?;
 
