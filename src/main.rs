@@ -44,6 +44,8 @@ fn main() -> anyhow::Result<()> {
         if !window.pool()? {
             break;
         }
+
+        std::thread::sleep(std::time::Duration::from_millis(16));
     }
 
     Ok(())
