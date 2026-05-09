@@ -244,4 +244,16 @@ impl Cpu {
 
         callback(&self.memory[START_DISPLAY..])
     }
+
+    pub fn getd(&mut self, x: u8) {
+        self[x] = self.dt
+    }
+
+    pub fn setd(&mut self, x: u8) {
+        self.dt = self[x]
+    }
+
+    pub fn sets(&mut self, x: u8) {
+        self.st = self[x]
+    }
 }

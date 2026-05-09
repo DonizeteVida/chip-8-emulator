@@ -34,6 +34,9 @@ fn main() -> anyhow::Result<()> {
             nibbles!(B, _, _, _) => chip8.jmpi(joinibble!(b, c, d)),
             nibbles!(C, _, _, _) => chip8.rand(b, joinibble!(c d)),
             nibbles!(D, _, _, _) => chip8.draw(b, c, d, |buffer| window.draw(buffer))?,
+            nibbles!(F, _, 0, 7) => chip8.getd(b),
+            nibbles!(F, _, 1, 5) => chip8.setd(b),
+            nibbles!(F, _, 1, 8) => chip8.sets(b),
             nibbles!(_, _, _, _) => std::panic!("Not Implemented: {:x}{:x}{:x}{:x}", a, b, c, d),
         }
 
