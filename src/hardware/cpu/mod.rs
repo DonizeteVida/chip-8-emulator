@@ -107,14 +107,14 @@ impl Cpu {
     pub fn eq(&mut self, x: u8, nn: u8) {
         let x = self[x];
         if x == nn {
-            self.pc += 2;
+            self.pc += 2
         }
     }
 
     pub fn nenn(&mut self, x: u8, nn: u8) {
         let x = self[x];
         if x != nn {
-            self.pc += 2;
+            self.pc += 2
         }
     }
 

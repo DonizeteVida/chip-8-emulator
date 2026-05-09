@@ -7,7 +7,7 @@ pub struct Window {
 }
 
 impl Window {
-    pub fn new(width: impl Into<u32>, height: impl Into<u32>) -> Result<Self> {
+    pub fn new<T: Into<u32>>(width: T, height: T) -> Result<Self> {
         use sdl3::pixels::PixelFormat;
         use sdl3::sys::pixels::SDL_PixelFormat;
 
