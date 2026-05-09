@@ -1,10 +1,8 @@
 mod hardware;
-mod io;
-mod macros;
 mod util;
 
 fn main() -> anyhow::Result<()> {
-    let mut chip8 = hardware::Cpu::new(io::load_rom()?);
+    let mut chip8 = hardware::Cpu::new(util::io::load_rom()?);
     let mut window = hardware::Window::new(chip8.width, chip8.height)?;
     let mut audio = hardware::Audio::new()?;
 
