@@ -1,3 +1,4 @@
+mod audio;
 mod hardware;
 mod io;
 mod macros;
@@ -6,7 +7,8 @@ mod window;
 
 fn main() -> anyhow::Result<()> {
     let mut chip8 = hardware::Chip8::new(io::load_rom()?);
-    let mut window = window::Window::new(chip8.width as u32, chip8.height as u32)?;
+    let mut window = window::Window::new(chip8.width, chip8.height)?;
+    let mut audio = audio::Audio::new()?;
 
     loop {
         let (a, b) = chip8.fetch();

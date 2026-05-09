@@ -7,9 +7,12 @@ pub struct Window {
 }
 
 impl Window {
-    pub fn new(width: u32, height: u32) -> Result<Self> {
+    pub fn new(width: impl Into<u32>, height: impl Into<u32>) -> Result<Self> {
         use sdl3::pixels::PixelFormat;
         use sdl3::sys::pixels::SDL_PixelFormat;
+
+        let width = width.into();
+        let height = height.into();
 
         let context = sdl3::init()?;
         let video = context.video()?;
@@ -46,7 +49,7 @@ impl Window {
         const PIXELS_PER_BYTE: usize = u8::BITS as usize;
 
         self.texture
-            .with_lock(None, |texture_buffer: &mut [u8], pitch: usize| {
+            .with_lock(None, |texture_buffer: &mut [u8], _: usize| {
                 for (byte_offset, byte) in bytes.iter().enumerate() {
                     for pixel_offset in 0..PIXELS_PER_BYTE {
                         let offset = (byte_offset * PIXELS_PER_BYTE * RGB565_SIZE)
