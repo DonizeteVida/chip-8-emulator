@@ -22,7 +22,7 @@ const FONT: [u8; 80] = [
     0xF0, 0x80, 0xF0, 0x80, 0x80, // F
 ];
 
-pub struct Chip8 {
+pub struct Cpu {
     memory: [u8; 4096],
     stack: [u16; 16],
     registers: [u8; 16],
@@ -35,7 +35,7 @@ pub struct Chip8 {
     pub height: u8,
 }
 
-impl Index<u16> for Chip8 {
+impl Index<u16> for Cpu {
     type Output = u8;
 
     fn index(&self, index: u16) -> &Self::Output {
@@ -43,7 +43,7 @@ impl Index<u16> for Chip8 {
     }
 }
 
-impl Index<u8> for Chip8 {
+impl Index<u8> for Cpu {
     type Output = u8;
 
     fn index(&self, index: u8) -> &Self::Output {
@@ -51,13 +51,13 @@ impl Index<u8> for Chip8 {
     }
 }
 
-impl IndexMut<u8> for Chip8 {
+impl IndexMut<u8> for Cpu {
     fn index_mut(&mut self, index: u8) -> &mut Self::Output {
         &mut self.registers[index as usize]
     }
 }
 
-impl Chip8 {
+impl Cpu {
     pub fn new(data: Vec<u8>) -> Self {
         let mut memory = [0; 4096];
 
