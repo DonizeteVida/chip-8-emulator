@@ -111,6 +111,47 @@ impl Window {
         Ok(true)
     }
 
+    pub fn get_key(&self) -> Result<u8> {
+        use sdl3::event::Event;
+        use sdl3::keyboard::Scancode;
+
+        let keys = std::collections::HashMap::<Scancode, u8>::from([
+            (Scancode::_1, 0x0),
+            (Scancode::_2, 0x1),
+            (Scancode::_3, 0x2),
+            (Scancode::_4, 0x3),
+            (Scancode::Q, 0x4),
+            (Scancode::W, 0x5),
+            (Scancode::E, 0x6),
+            (Scancode::R, 0x7),
+            (Scancode::A, 0x8),
+            (Scancode::S, 0x9),
+            (Scancode::D, 0xA),
+            (Scancode::F, 0xB),
+            (Scancode::Z, 0xC),
+            (Scancode::X, 0xD),
+            (Scancode::C, 0xE),
+            (Scancode::V, 0xF),
+        ]);
+
+        let mut event_pump = self.context.event_pump()?;
+
+        loop {
+            for event in event_pump.poll_iter() {
+                if let Event::KeyUp {
+                    scancode: Some(scancode),
+                    ..
+                } = event
+                    && let Some(value) = keys.get(&scancode)
+                {
+                    return Ok(*value);
+                }
+            }
+
+            std::thread::sleep(std::time::Duration::from_millis(16));
+        }
+    }
+
     fn render_texture(&mut self) -> Result<()> {
         use sdl3::pixels::Color;
         use sdl3::rect::Rect;

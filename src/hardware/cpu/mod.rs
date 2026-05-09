@@ -249,6 +249,11 @@ impl Cpu {
         self[x] = self.dt
     }
 
+    pub fn getk(&mut self, x: u8, get_key: impl Fn() -> anyhow::Result<u8>) -> anyhow::Result<()> {
+        let key = get_key()?;
+        Ok(self[x] = key)
+    }
+
     pub fn setd(&mut self, x: u8) {
         self.dt = self[x]
     }
