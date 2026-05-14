@@ -8,7 +8,10 @@ pub struct Window {
 }
 
 impl Window {
-    pub fn new(width: u32, height: u32) -> Result<Self> {
+    pub fn new<T: Into<u32>>(width: T, height: T) -> Result<Self> {
+        let width = width.into();
+        let height = height.into();
+
         Ok(Self { width, height })
     }
 
@@ -39,5 +42,9 @@ impl Window {
 
     pub fn pool(&mut self) -> Result<bool> {
         Ok(true)
+    }
+
+    pub fn get_key(&self) -> Result<u8> {
+        Ok(0)
     }
 }
