@@ -4,11 +4,11 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-anyhow = "1.0.102"
-cpal = "0.17.3"
-rand = "0.10.1"
-ratatui = { version = "0.30.0", optional = true }
-sdl3 = { version = "0.18.2", features = ["build-from-source-static", "unsafe_textures"], optional = true }
+anyhow = "1.0.104"
+cpal = "0.18.2"
+rand = "0.10.2"
+ratatui = { version = "0.30.2", optional = true }
+sdl3 = { version = "0.18.4", features = ["build-from-source-static", "unsafe_textures"], optional = true }
 
 [features]
 default = ["sdl3_window"]
